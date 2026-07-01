@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const MarketHeader = () => {
   return (
-    <div className="flex flex-col gap-y-[21.64px]">
+    <div className="flex flex-col gap-y-[21.64px] mb-6">
       <div className="flex pr-[28.54px] items-center justify-between">
         <div className="flex gap-x-[28.85px] items-center">
           <Image

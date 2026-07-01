@@ -13,11 +13,15 @@ const MarketDetailGrid = () => {
         {/* TO-DO:  add button to go back to markets page */}
         <span>Go back</span>
         <MarketHeader />
-        <PriceChartPanel />
-        <OrderBookPanel />
-        <MarketSummary />
-        <TimelinePayout />
-        <RelatedMarkets />
+        <div className="flex flex-col gap-y-[35px]">
+          <div className="flex flex-col gap-y-[46px]">
+            <PriceChartPanel />
+            <OrderBookPanel />
+            <MarketSummary />
+          </div>
+          <TimelinePayout />
+          <RelatedMarkets />
+        </div>
       </div>
       <div className="pl-[45px]">
         <BuySellPanel />
