@@ -35,6 +35,12 @@
   --color-grey-light: #fcfcfe;
   --color-grey-lighter: #f8f9fb;
 
-  --color-light-blue: #eaf2fd;
-  --color-light-blue-dark: #cce0fd;
+  --color-light-blue-10: #eaf2fd;
+  --color-light-blue-20: #cce0fd;
+  --color-light-blue-30: #f2f7fe;
+
+  --color-bid: #16a34a;
+  --color-bid-bg: #f0fdf4;
+  --color-ask: #dc2626;
+  --color-ask-bg: #fef2f2;
 }
