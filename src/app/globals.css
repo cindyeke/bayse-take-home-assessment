@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
-@theme {
+@theme inline {
+  --font-sans: var(--font-onest);
   --font-onest: var(--font-onest);
   --font-inter: var(--font-inter);
   --font-archivo: var(--font-archivo);
+}
 
+@theme {
   --color-dark-blue: #032b69;
   --color-dark-blue-5: #f2f4f8;
   --color-dark-blue-10: #dae0ea;
@@ -19,6 +22,7 @@
   --color-azure-blue-light: #72a5ec;
   --color-azure-blue-lighter: #aed0ff;
 
+  --color-secondary: #f2f5fd;
   --color-secondary-red: #ff3f3f;
   --color-secondary-gray: #77808d;
   --color-secondary-green: #17bd5e;
