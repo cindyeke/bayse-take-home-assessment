@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${onest.variable} ${inter.variable} ${archivo.variable} h-full font-sans antialiased`}
+      className={`${onest.variable} ${inter.variable} ${archivo.variable} h-full font-sans antialiased `}
     >
       <body>{children}</body>
     </html>

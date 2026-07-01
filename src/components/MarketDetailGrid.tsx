@@ -1,10 +1,10 @@
 import BuySellPanel from "./BuySellPanel";
 import MarketHeader from "./MarketHeader";
 import OrderBookPanel from "./OrderBookPanel";
-import PriceChartPanel from "./PriceChartPanel";
 import RelatedMarkets from "./RelatedMarkets";
 import TimelinePayout from "./TimelinePayout";
 import MarketSummary from "./MarketSummary";
+import MarketChartPanel from "./MarketChartPanel";
 
 const MarketDetailGrid = () => {
   return (
@@ -15,7 +15,7 @@ const MarketDetailGrid = () => {
         <MarketHeader />
         <div className="flex flex-col gap-y-[35px]">
           <div className="flex flex-col gap-y-[46px]">
-            <PriceChartPanel />
+            <MarketChartPanel />
             <OrderBookPanel />
             <MarketSummary />
           </div>
