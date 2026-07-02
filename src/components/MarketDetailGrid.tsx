@@ -10,7 +10,7 @@ import MarketChartPanel from "./MarketChartPanel";
 
 const MarketDetailGrid = () => {
   return (
-    <div className="grid grid-cols-[auto_1fr] border-t border-t-dark-blue-5">
+    <main className="grid grid-cols-[auto_1fr] border-t border-t-dark-blue-5">
       <div className="pr-[35px] border-r border-r-dark-blue-5 border-stroke pt-7">
         <div className="text-xs font-medium flex gap-x-3 mb-8 items-center text-dark-blue">
           <button className="bg-dark-blue-5 w-6 h-6 rounded-full flex items-center justify-center">
@@ -32,7 +32,7 @@ const MarketDetailGrid = () => {
       <div className="pl-[45px] pt-[30px]">
         <BuySellPanel />
       </div>
-    </div>
+    </main>
   );
 };
 
