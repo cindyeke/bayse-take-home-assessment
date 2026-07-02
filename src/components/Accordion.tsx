@@ -11,12 +11,13 @@ function Accordion({
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="border border-dark-blue-10 rounded-[10px] overflow-hidden">
+    <div className="border border-dark-blue-10 rounded-[10px] overflow-hidden text-[10px] font-archivo">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex justify-between items-center h-[51px] bg-grey-lighter p-[17px] pt-[19px] font-semibold text-[14px] text-dark-blue-60 font-archivo"
       >
         {title}
+        <img src="/icons/chevronup.svg" alt="chevronup" />
       </button>
 
       <div

@@ -1,6 +1,6 @@
 import BuySellPanel from "./BuySellPanel";
 import MarketHeader from "./MarketHeader";
-import OrderBookPanel from "./OrderBookPanel";
+import OrderBookPanel from "./OrderBookPanel/OrderBookPanel";
 import RelatedMarkets from "./RelatedMarkets";
 import TimelinePayout from "./TimelinePayout";
 import MarketSummary from "./MarketSummary";

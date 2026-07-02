@@ -8,6 +8,8 @@
 }
 
 @theme {
+  --color-white: #fff;
+
   --color-dark-blue: #032b69;
   --color-dark-blue-5: #f2f4f8;
   --color-dark-blue-10: #dae0ea;
@@ -26,7 +28,9 @@
   --color-secondary-red: #ff3f3f;
   --color-secondary-gray: #77808d;
   --color-secondary-green: #17bd5e;
+
   --color-green: #30a159;
+  --color-green-10: #17bd5e1a;
 
   --color-stroke: #e6e8ea;
   --color-stroke-light: #eff1f4;
@@ -39,8 +43,5 @@
   --color-light-blue-20: #cce0fd;
   --color-light-blue-30: #f2f7fe;
 
-  --color-bid: #16a34a;
-  --color-bid-bg: #f0fdf4;
-  --color-ask: #dc2626;
-  --color-ask-bg: #fef2f2;
+  --color-red-7: #ff0f0012;
 }
