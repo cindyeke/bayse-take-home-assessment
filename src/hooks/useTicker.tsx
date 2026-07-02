@@ -4,7 +4,6 @@ import { queryKeys } from "@/lib/querykeys";
 import { Ticker } from "@/types/ticker";
 
 export function useTicker(marketId: string, outcomeId: string | null) {
-  console.log({ marketId, outcomeId });
   return useQuery<Ticker, Error>({
     queryKey: queryKeys.ticker(marketId, outcomeId ?? ""),
     queryFn: ({ signal }) =>

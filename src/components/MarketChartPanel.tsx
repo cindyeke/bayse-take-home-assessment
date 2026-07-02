@@ -13,8 +13,6 @@ const MarketChartPanel = ({
 }) => {
   const { data: ticker, isLoading: isTickerLoading } = useTicker(eventId, outcomeId);
 
-  console.log({ ticker });
-
   return (
     <div className="flex flex-col items-center gap-y-[33px]">
       <div className="w-full">

@@ -1,26 +1,9 @@
-import { DummyLevel } from "@/types/orderbook";
+import { useState } from "react";
+import { useOrderBook } from "@/hooks/useOrderBook";
+import { deriveOrderBook } from "@/lib/orderbook";
 import Accordion from "../Accordion";
 import OrderBookRow from "./OrderBookRow";
-
-const DUMMY_ASKS: DummyLevel[] = [
-  { price: 0.81, quantity: 11463, total: 10228382.87, depthPercent: 45 },
-  { price: 0.77, quantity: 13847, total: 1293382.84, depthPercent: 70 },
-  { price: 0.69, quantity: 583, total: 128382.55, depthPercent: 100 },
-  { price: 0.67, quantity: 3485, total: 84384.48, depthPercent: 55 },
-  { price: 0.65, quantity: 463, total: 28384.0, depthPercent: 45 },
-];
-
-const DUMMY_BIDS: DummyLevel[] = [
-  { price: 0.75, quantity: 847, total: 54382.0, depthPercent: 58 },
-  { price: 0.72, quantity: 405, total: 124382.0, depthPercent: 75 },
-  { price: 0.66, quantity: 2948, total: 544382.0, depthPercent: 100 },
-  { price: 0.61, quantity: 4847, total: 1454382.0, depthPercent: 65 },
-  { price: 0.59, quantity: 11203, total: 3454382.0, depthPercent: 15 },
-];
-
-const DUMMY_LAST_TRADED_PRICE = 0.65;
-const DUMMY_LAST_TRADED_SIDE = "buy";
-const DUMMY_SPREAD = 0.05;
+import { formatPrice } from "@/util/format";
 
 const Title = ({ title }: { title: string }) => {
   return (
@@ -31,17 +14,101 @@ const Title = ({ title }: { title: string }) => {
   );
 };
 
-function OrderBookPanel() {
+const OrderBookPanel = ({
+  outcome1,
+  outcome2,
+}: {
+  outcome1: { id: string; label: string };
+  outcome2: { id: string; label: string };
+}) => {
+  const {
+    data: orderBooks,
+    isLoading,
+    isError,
+    refetch,
+  } = useOrderBook([outcome1.id, outcome2.id]);
+
+  const [userSelectedOutcome, setUserSelectedOutcome] = useState<string | null>(
+    null,
+  );
+
+  const activeOutcomeId = userSelectedOutcome ?? outcome1.id;
+
+  const snapshot =
+    orderBooks?.find((ob) => ob.outcomeId === activeOutcomeId) ?? null;
+
+  const handleOfferClick = (outcomeId: string) => {
+    setUserSelectedOutcome(outcomeId);
+  };
+
+  if (isLoading) {
+    return (
+      <Accordion title={<Title title="Order Book" />}>
+        <div className="font-archivo px-[18px] py-[24px] text-[13px] text-dark-blue-50">
+          Loading order book…
+        </div>
+      </Accordion>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Accordion title={<Title title="Order Book" />}>
+        <div className="font-archivo px-[18px] py-[24px] flex flex-col gap-y-2">
+          <span className="text-[13px] text-dark-blue-50">
+            Couldn't load the order book.
+          </span>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="text-[13px] font-medium text-azure-blue self-start"
+          >
+            Retry
+          </button>
+        </div>
+      </Accordion>
+    );
+  }
+
+  if (!snapshot || (snapshot.bids.length === 0 && snapshot.asks.length === 0)) {
+    return (
+      <Accordion title={<Title title="Order Book" />}>
+        <div className="font-archivo px-[18px] py-[24px] text-[13px] text-dark-blue-50">
+          No open orders for this market yet.
+        </div>
+      </Accordion>
+    );
+  }
+
+  const { bidDepth, askDepth, spread } = deriveOrderBook(
+    snapshot.bids,
+    snapshot.asks,
+  );
+
   return (
     <Accordion title={<Title title="Order Book" />}>
       <div className="font-archivo">
         <div className="flex flex-col gap-x-2 pt-[19px] pl-[18px] mb-[14.85px]">
-          <div className="flex gap-x-2 font-onest">
-            <button className="text-[13px] font-medium text-azure-blue border border-azure-blue bg-light-blue-30 py-[6.5px] px-[14px] rounded-[5px]">
-              Yes Offers
+          <div className="flex gap-x-2 font-onest capitalize">
+            <button
+              className={`text-[13px] font-medium py-[6.5px] px-[14px] rounded-[5px] ${
+                activeOutcomeId === outcome1.id
+                  ? "bg-light-blue-30 text-azure-blue border border-azure-blue"
+                  : "border border-dark-blue-10 text-dark-blue-80"
+              }`}
+              onClick={() => handleOfferClick(outcome1.id)}
+            >
+              {outcome1.label} Offers
             </button>
-            <button className="text-xs font-medium border border-dark-blue-10 text-dark-blue-80 py-[6.5px] px-[14px] rounded-[5px]">
-              No Offers
+            <button
+              className={`text-xs font-medium py-[6.5px] px-[14px] rounded-[5px] ${
+                activeOutcomeId === outcome2.id
+                  ? "bg-light-blue-30 text-azure-blue border border-azure-blue"
+                  : "border border-dark-blue-10 text-dark-blue-80"
+              }`}
+              onClick={() => handleOfferClick(outcome2.id)}
+            >
+              {outcome2.label} Offers
             </button>
           </div>
         </div>
@@ -61,15 +128,22 @@ function OrderBookPanel() {
             <span className="text-center self-end">Total Amount</span>
           </div>
           <div className="flex flex-col gap-y-px">
-            {DUMMY_ASKS.map((level) => (
+            {askDepth.map((level) => (
               <OrderBookRow key={level.price} level={level} side="ask" />
             ))}
           </div>
           <div className="relative grid grid-cols-4 items-center pl-[18px] pt-[13px] pb-[9.57px] text-[10px] text-dark-blue-70">
             <span>
               Last Traded Price:{" "}
-              <span className="text-secondary-green font-medium">
-                ₦{DUMMY_LAST_TRADED_PRICE} ({DUMMY_LAST_TRADED_SIDE})
+              <span
+                className={`${
+                  snapshot.lastTradedSide === "SELL"
+                    ? "text-secondary-red"
+                    : "text-secondary-green"
+                } font-medium`}
+              >
+                ₦{formatPrice(snapshot.lastTradedPrice)} (
+                {snapshot.lastTradedSide.toLowerCase()})
               </span>
             </span>
             <span></span>
@@ -77,13 +151,13 @@ function OrderBookPanel() {
             <span className="text-center">
               Spread:{" "}
               <span className="text-azure-blue font-medium">
-                ₦{DUMMY_SPREAD}
+                ₦{formatPrice(spread ?? 0)}
               </span>
             </span>
           </div>
 
           <div className="flex flex-col gap-y-px">
-            {DUMMY_BIDS.map((level) => (
+            {bidDepth.map((level) => (
               <OrderBookRow key={level.price} level={level} side="bid" />
             ))}
           </div>
@@ -91,6 +165,6 @@ function OrderBookPanel() {
       </div>
     </Accordion>
   );
-}
+};
 
 export default OrderBookPanel;

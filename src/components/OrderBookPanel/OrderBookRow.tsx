@@ -1,10 +1,11 @@
-import { DummyLevel } from "@/types/orderbook";
+import { DepthLevel } from "@/types/orderbook";
+import { formatAmount, formatPrice } from "@/util/format";
 
 const OrderBookRow = ({
   level,
   side,
 }: {
-  level: DummyLevel;
+  level: DepthLevel;
   side: "ask" | "bid";
 }) => {
   const isAsk = side === "ask";
@@ -26,13 +27,13 @@ const OrderBookRow = ({
       <div
         className={`relative font-semibold text-center text-xs ${isAsk ? "text-secondary-red" : "text-secondary-green"}`}
       >
-        ₦{level.price}
+        ₦{formatPrice(level.price)}
       </div>
       <div className="relative text-center font-medium">
-        {level.quantity.toLocaleString()}
+        {formatAmount(level.quantity)}
       </div>
       <div className="relative text-center font-medium">
-        ₦{level.total.toLocaleString()}
+        ₦{formatAmount(level.total)}
       </div>
     </div>
   );
