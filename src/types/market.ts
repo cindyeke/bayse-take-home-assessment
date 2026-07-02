@@ -22,8 +22,9 @@ export interface Market {
   rules: string;
 }
 
-export interface MarketEvent {
+export interface Event {
   id: string;
+  imageUrl: string;
   slug: string;
   title: string;
   category: string;
