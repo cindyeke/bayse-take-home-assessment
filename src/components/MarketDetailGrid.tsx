@@ -1,5 +1,6 @@
+"use client";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
-
+import { useParams } from "next/navigation";
 import BuySellPanel from "./BuySellPanel";
 import MarketHeader from "./MarketHeader";
 import OrderBookPanel from "./OrderBookPanel/OrderBookPanel";
@@ -7,8 +8,13 @@ import RelatedMarkets from "./RelatedMarkets";
 import TimelinePayout from "./TimelinePayout";
 import MarketSummary from "./MarketSummary";
 import MarketChartPanel from "./MarketChartPanel";
+import { useEventBySlug } from "@/hooks/useEventBySlug";
 
 const MarketDetailGrid = () => {
+  const { slug } = useParams<{ slug: string }>();
+
+  const { data: event, isLoading: isEventLoading } = useEventBySlug(slug);
+
   return (
     <main className="grid grid-cols-[auto_1fr] border-t border-t-dark-blue-5">
       <div className="pr-[35px] border-r border-r-dark-blue-5 border-stroke pt-7">
@@ -18,7 +24,7 @@ const MarketDetailGrid = () => {
           </button>
           Go back
         </div>
-        <MarketHeader />
+        <MarketHeader event={event} isLoading={isEventLoading} />
         <div className="flex flex-col gap-y-[35px]">
           <div className="flex flex-col gap-y-[46px]">
             <MarketChartPanel />
