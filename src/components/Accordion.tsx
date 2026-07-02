@@ -11,10 +11,10 @@ function Accordion({
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="border border-dark-blue-10 rounded-[10px] overflow-hidden text-[10px] font-archivo">
+    <div className="border border-dark-blue-10 rounded-[10px] overflow-hidden text-[10px]">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center h-[51px] bg-grey-lighter p-[17px] pt-[19px] font-semibold text-[14px] text-dark-blue-60 font-archivo"
+        className="w-full flex justify-between items-center h-[51px] bg-grey-lighter p-[17px] pt-[19px] font-semibold text-[14px] text-dark-blue-60"
       >
         {title}
         <img src="/icons/chevronup.svg" alt="chevronup" />
@@ -25,9 +25,7 @@ function Accordion({
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         }`}
       >
-        <div className="overflow-hidden">
-          <div>{children}</div>
-        </div>
+        <div className="overflow-hidden">{children}</div>
       </div>
     </div>
   );

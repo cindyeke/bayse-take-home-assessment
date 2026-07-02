@@ -24,7 +24,7 @@ const DUMMY_SPREAD = 0.05;
 
 const Title = ({ title }: { title: string }) => {
   return (
-    <span className="flex gap-x-[6px]">
+    <span className="flex gap-x-[6px] font-archivo">
       {title}
       <img src="/icons/roundquestionmark.svg" alt="questionmark" />
     </span>
@@ -34,55 +34,59 @@ const Title = ({ title }: { title: string }) => {
 function OrderBookPanel() {
   return (
     <Accordion title={<Title title="Order Book" />}>
-      <div className="flex flex-col gap-x-2 pt-[19px] pl-[18px] mb-[14.85px]">
-        <div className="flex gap-x-2 font-onest">
-          <button className="text-[13px] font-medium text-azure-blue border border-azure-blue bg-light-blue-30 py-[6.5px] px-[14px] rounded-[5px]">
-            Yes Offers
-          </button>
-          <button className="text-xs font-medium border border-dark-blue-10 text-dark-blue-80 py-[6.5px] px-[14px] rounded-[5px]">
-            No Offers
-          </button>
-        </div>
-      </div>
-      <div className="px-1 pb-1">
-        <div className="grid grid-cols-4 pb-[10px] font-semibold uppercase text-dark-blue-50 border-b border-b-dark-blue-10 font-onest items-center">
-          <div className="">
-            <div className="ml-[14px] border border-azure-blue-lighter bg-secondary py-[6px] px-[7px] rounded-[3px] w-fit shadow-[-1.94px_1.94px_3.89px_0px_rgba(0,0,0,0.08)]">
-              <img
-                src="/icons/groupedline.svg"
-                alt="groupedline"
-                className="w-[11.08px] h-[11.08px] "
-              />
-            </div>
+      <div className="font-archivo">
+        <div className="flex flex-col gap-x-2 pt-[19px] pl-[18px] mb-[14.85px]">
+          <div className="flex gap-x-2 font-onest">
+            <button className="text-[13px] font-medium text-azure-blue border border-azure-blue bg-light-blue-30 py-[6.5px] px-[14px] rounded-[5px]">
+              Yes Offers
+            </button>
+            <button className="text-xs font-medium border border-dark-blue-10 text-dark-blue-80 py-[6.5px] px-[14px] rounded-[5px]">
+              No Offers
+            </button>
           </div>
-          <span className="text-center self-end">Their Price</span>
-          <span className="text-center self-end">Shares</span>
-          <span className="text-center self-end">Total Amount</span>
         </div>
-        <div className="flex flex-col gap-y-px">
-          {DUMMY_ASKS.map((level) => (
-            <OrderBookRow key={level.price} level={level} side="ask" />
-          ))}
-        </div>
-        <div className="relative grid grid-cols-4 items-center pl-[18px] pt-[13px] pb-[9.57px] text-[10px] text-dark-blue-70">
-          <span>
-            Last Traded Price:{" "}
-            <span className="text-secondary-green font-medium">
-              ₦{DUMMY_LAST_TRADED_PRICE} ({DUMMY_LAST_TRADED_SIDE})
+        <div className="px-1 pb-1">
+          <div className="grid grid-cols-4 pb-[10px] font-semibold uppercase text-dark-blue-50 border-b border-b-dark-blue-10 font-onest items-center">
+            <div className="">
+              <div className="ml-[14px] border border-azure-blue-lighter bg-secondary py-[6px] px-[7px] rounded-[3px] w-fit shadow-[-1.94px_1.94px_3.89px_0px_rgba(0,0,0,0.08)]">
+                <img
+                  src="/icons/groupedline.svg"
+                  alt="groupedline"
+                  className="w-[11.08px] h-[11.08px] "
+                />
+              </div>
+            </div>
+            <span className="text-center self-end">Their Price</span>
+            <span className="text-center self-end">Shares</span>
+            <span className="text-center self-end">Total Amount</span>
+          </div>
+          <div className="flex flex-col gap-y-px">
+            {DUMMY_ASKS.map((level) => (
+              <OrderBookRow key={level.price} level={level} side="ask" />
+            ))}
+          </div>
+          <div className="relative grid grid-cols-4 items-center pl-[18px] pt-[13px] pb-[9.57px] text-[10px] text-dark-blue-70">
+            <span>
+              Last Traded Price:{" "}
+              <span className="text-secondary-green font-medium">
+                ₦{DUMMY_LAST_TRADED_PRICE} ({DUMMY_LAST_TRADED_SIDE})
+              </span>
             </span>
-          </span>
-          <span></span>
-          <span></span>
-          <span className="text-center">
-            Spread:{" "}
-            <span className="text-azure-blue font-medium">₦{DUMMY_SPREAD}</span>
-          </span>
-        </div>
+            <span></span>
+            <span></span>
+            <span className="text-center">
+              Spread:{" "}
+              <span className="text-azure-blue font-medium">
+                ₦{DUMMY_SPREAD}
+              </span>
+            </span>
+          </div>
 
-        <div className="flex flex-col gap-y-px">
-          {DUMMY_BIDS.map((level) => (
-            <OrderBookRow key={level.price} level={level} side="bid" />
-          ))}
+          <div className="flex flex-col gap-y-px">
+            {DUMMY_BIDS.map((level) => (
+              <OrderBookRow key={level.price} level={level} side="bid" />
+            ))}
+          </div>
         </div>
       </div>
     </Accordion>
