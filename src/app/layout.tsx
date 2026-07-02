@@ -24,7 +24,7 @@ export default function RootLayout({
       lang="en"
       className={`${onest.variable} ${inter.variable} ${archivo.variable} h-full font-sans antialiased `}
     >
-      <body>{children}</body>
+      <body className="bg-off-white">{children}</body>
     </html>
   );
 }
