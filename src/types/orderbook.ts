@@ -10,7 +10,7 @@ export interface DepthLevel extends OrderBookLevel {
   depthPercent: number;
 }
 
-export interface OrderBookSnapshot {
+export interface OrderBook {
   marketId: string;
   outcomeId: string;
   timestamp: string;

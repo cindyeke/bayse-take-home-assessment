@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { useOrderBook } from "@/hooks/useOrderBook";
 import { deriveOrderBook } from "@/lib/orderbook";
 import Accordion from "../Accordion";
 import OrderBookRow from "./OrderBookRow";
-import { formatPrice } from "@/util/formatprice";
+import { formatPrice } from "@/util/format";
 
 const Title = ({ title }: { title: string }) => {
   return (
@@ -13,13 +14,32 @@ const Title = ({ title }: { title: string }) => {
   );
 };
 
-const OrderBookPanel = ({ outcomeId }: { outcomeId: string }) => {
+const OrderBookPanel = ({
+  outcome1,
+  outcome2,
+}: {
+  outcome1: { id: string; label: string };
+  outcome2: { id: string; label: string };
+}) => {
   const {
     data: orderBooks,
     isLoading,
     isError,
     refetch,
-  } = useOrderBook([outcomeId]);
+  } = useOrderBook([outcome1.id, outcome2.id]);
+
+  const [userSelectedOutcome, setUserSelectedOutcome] = useState<string | null>(
+    null,
+  );
+
+  const activeOutcomeId = userSelectedOutcome ?? outcome1.id;
+
+  const snapshot =
+    orderBooks?.find((ob) => ob.outcomeId === activeOutcomeId) ?? null;
+
+  const handleOfferClick = (outcomeId: string) => {
+    setUserSelectedOutcome(outcomeId);
+  };
 
   if (isLoading) {
     return (
@@ -50,8 +70,6 @@ const OrderBookPanel = ({ outcomeId }: { outcomeId: string }) => {
     );
   }
 
-  const snapshot = orderBooks?.[0];
-
   if (!snapshot || (snapshot.bids.length === 0 && snapshot.asks.length === 0)) {
     return (
       <Accordion title={<Title title="Order Book" />}>
@@ -71,12 +89,26 @@ const OrderBookPanel = ({ outcomeId }: { outcomeId: string }) => {
     <Accordion title={<Title title="Order Book" />}>
       <div className="font-archivo">
         <div className="flex flex-col gap-x-2 pt-[19px] pl-[18px] mb-[14.85px]">
-          <div className="flex gap-x-2 font-onest">
-            <button className="text-[13px] font-medium text-azure-blue border border-azure-blue bg-light-blue-30 py-[6.5px] px-[14px] rounded-[5px]">
-              Yes Offers
+          <div className="flex gap-x-2 font-onest capitalize">
+            <button
+              className={`text-[13px] font-medium py-[6.5px] px-[14px] rounded-[5px] ${
+                activeOutcomeId === outcome1.id
+                  ? "bg-light-blue-30 text-azure-blue border border-azure-blue"
+                  : "border border-dark-blue-10 text-dark-blue-80"
+              }`}
+              onClick={() => handleOfferClick(outcome1.id)}
+            >
+              {outcome1.label} Offers
             </button>
-            <button className="text-xs font-medium border border-dark-blue-10 text-dark-blue-80 py-[6.5px] px-[14px] rounded-[5px]">
-              No Offers
+            <button
+              className={`text-xs font-medium py-[6.5px] px-[14px] rounded-[5px] ${
+                activeOutcomeId === outcome2.id
+                  ? "bg-light-blue-30 text-azure-blue border border-azure-blue"
+                  : "border border-dark-blue-10 text-dark-blue-80"
+              }`}
+              onClick={() => handleOfferClick(outcome2.id)}
+            >
+              {outcome2.label} Offers
             </button>
           </div>
         </div>
@@ -103,7 +135,13 @@ const OrderBookPanel = ({ outcomeId }: { outcomeId: string }) => {
           <div className="relative grid grid-cols-4 items-center pl-[18px] pt-[13px] pb-[9.57px] text-[10px] text-dark-blue-70">
             <span>
               Last Traded Price:{" "}
-              <span className="text-secondary-green font-medium">
+              <span
+                className={`${
+                  snapshot.lastTradedSide === "SELL"
+                    ? "text-secondary-red"
+                    : "text-secondary-green"
+                } font-medium`}
+              >
                 ₦{formatPrice(snapshot.lastTradedPrice)} (
                 {snapshot.lastTradedSide.toLowerCase()})
               </span>

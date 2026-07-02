@@ -8,6 +8,8 @@ export function useOrderBook(outcomeIds: string[]) {
   outcomeIds.forEach((outcomeId) => {
     params.append("outcomeId[]", outcomeId);
   });
+  params.append("depth", "5");
+  params.append("currency", "NGN");
 
   return useQuery({
     queryKey: queryKeys.orderBook(outcomeIds),

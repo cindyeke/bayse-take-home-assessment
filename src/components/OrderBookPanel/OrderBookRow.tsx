@@ -1,5 +1,5 @@
 import { DepthLevel } from "@/types/orderbook";
-import { formatPrice } from "@/util/formatprice";
+import { formatAmount, formatPrice } from "@/util/format";
 
 const OrderBookRow = ({
   level,
@@ -30,10 +30,10 @@ const OrderBookRow = ({
         ₦{formatPrice(level.price)}
       </div>
       <div className="relative text-center font-medium">
-        {level.quantity.toLocaleString()}
+        {formatAmount(level.quantity)}
       </div>
       <div className="relative text-center font-medium">
-        ₦{formatPrice(level.total)}
+        ₦{formatAmount(level.total)}
       </div>
     </div>
   );
