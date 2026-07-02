@@ -8,7 +8,7 @@ import MarketChartPanel from "./MarketChartPanel";
 
 const MarketDetailGrid = () => {
   return (
-    <div className="grid grid-cols-[1fr_363px] px-[120px]">
+    <div className="grid grid-cols-[auto_1fr]">
       <div className="pr-[35px] border-r border-r-dark-blue-5 border-stroke">
         {/* TO-DO:  add button to go back to markets page */}
         <span>Go back</span>
@@ -23,7 +23,7 @@ const MarketDetailGrid = () => {
           <RelatedMarkets />
         </div>
       </div>
-      <div className="pl-[45px]">
+      <div className="pl-[45px] mt-[2px]">
         <BuySellPanel />
       </div>
     </div>
