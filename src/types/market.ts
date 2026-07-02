@@ -1,8 +1,7 @@
-// types/api.ts
-
 export type EventStatus = "open" | "closed";
 export type MarketStatus = "open" | "closed";
 export type SupportedCurrency = "USD" | "NGN";
+export type MarketOutcome = "YES" | "NO";
 
 export interface Market {
   id: string;
