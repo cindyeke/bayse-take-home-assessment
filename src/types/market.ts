@@ -7,6 +7,7 @@ export interface Market {
   id: string;
   title: string;
   status: MarketStatus;
+  imageUrl: string;
   outcome1Id: string;
   outcome1Label: string;
   outcome1Price: number;
