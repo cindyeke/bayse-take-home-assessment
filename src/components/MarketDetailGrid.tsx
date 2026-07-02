@@ -1,5 +1,7 @@
 "use client";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
+import { useEffect, useState } from "react";
+
 import { useParams } from "next/navigation";
 import BuySellPanel from "./BuySellPanel";
 import MarketHeader from "./MarketHeader";
@@ -14,6 +16,13 @@ const MarketDetailGrid = () => {
   const { slug } = useParams<{ slug: string }>();
 
   const { data: event, isLoading: isEventLoading } = useEventBySlug(slug);
+  const [outcomeId, setOutcomeId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (event?.markets[0]?.outcome1Id) {
+      setOutcomeId(event.markets[0].outcome1Id);
+    }
+  }, [event]);
 
   return (
     <main className="grid grid-cols-[auto_1fr] border-t border-t-dark-blue-5">
@@ -24,10 +33,17 @@ const MarketDetailGrid = () => {
           </button>
           Go back
         </div>
-        <MarketHeader event={event} isLoading={isEventLoading} />
+        <MarketHeader
+          event={event}
+          isLoading={isEventLoading}
+          setOutcomeId={setOutcomeId}
+        />
         <div className="flex flex-col gap-y-[35px]">
           <div className="flex flex-col gap-y-[46px]">
-            <MarketChartPanel />
+            <MarketChartPanel
+              eventId={event?.markets[0].id ?? ""}
+              outcomeId={outcomeId}
+            />
             <OrderBookPanel />
             <MarketSummary />
           </div>

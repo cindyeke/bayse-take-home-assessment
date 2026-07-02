@@ -1,15 +1,18 @@
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import { MarketEvent } from "@/types/market";
+import { Event } from "@/types/market";
 
 const MarketHeader = ({
   event,
   isLoading,
+  setOutcomeId,
 }: {
-  event?: MarketEvent;
+  event?: Event;
   isLoading?: boolean;
+  setOutcomeId: Dispatch<SetStateAction<string | null>>;
 }) => {
   const market = !isLoading ? event?.markets[0] : null;
 
@@ -21,7 +24,7 @@ const MarketHeader = ({
             <Skeleton width={84.75} height={84.75} borderRadius="6px" />
           ) : (
             <Image
-              src={market?.imageUrl ?? ""}
+              src={event?.imageUrl ?? ""}
               alt="market"
               width={84.75}
               height={84.75}
@@ -55,10 +58,16 @@ const MarketHeader = ({
         <Skeleton width={100} height={24} />
       ) : (
         <div className="w-fit p-[6px] bg-secondary font-archivo text-[10px] rounded-[5px]">
-          <button className="px-2 bg-white font-semibold rounded-[3px] h-[19px] text-azure-blue mr-4">
+          <button
+            className="px-2 bg-white font-semibold rounded-[3px] h-[19px] text-azure-blue mr-4"
+            onClick={() => setOutcomeId(market?.outcome1Id ?? null)}
+          >
             {market?.outcome1Label}
           </button>
-          <button className="font-medium h-[19px] text-dark-blue-30">
+          <button
+            className="font-medium h-[19px] text-dark-blue-30"
+            onClick={() => setOutcomeId(market?.outcome2Id ?? null)}
+          >
             {market?.outcome2Label}
           </button>
         </div>
