@@ -45,3 +45,7 @@
 
   --color-red-7: #ff0f0012;
 }
+
+button {
+  @apply cursor-pointer;
+}
