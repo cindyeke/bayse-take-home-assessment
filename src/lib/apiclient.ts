@@ -1,0 +1,19 @@
+import { normalizeApiError } from "./apierror";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
+interface RequestOptions {
+  signal?: AbortSignal;
+}
+
+export async function apiFetch<T>(path: string, options?: RequestOptions): Promise<T> {
+  const response = await fetch(`${BASE_URL}${path}`, {
+    signal: options?.signal,
+  });
+
+  if (!response.ok) {
+    throw await normalizeApiError(response);
+  }
+
+  return response.json() as Promise<T>;
+}
