@@ -1,6 +1,6 @@
 "use client";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 
 import { useParams } from "next/navigation";
 import BuySellPanel from "./BuySellPanel";
@@ -34,17 +34,26 @@ const MarketDetailGrid = () => {
     }
   }, [event]);
 
-  const outcome1: MarketOutcome = {
-    id: event?.markets[0]?.outcome1Id ?? "",
-    label: event?.markets[0]?.outcome1Label ?? "",
-    price: event?.markets[0]?.outcome1Price ?? 0,
-  };
+  const outcome1: MarketOutcome = useMemo(
+    () => ({
+      id: event?.markets[0]?.outcome1Id ?? "",
+      label: event?.markets[0]?.outcome1Label ?? "",
+      price: event?.markets[0]?.outcome1Price ?? 0,
+    }),
+    [event?.markets],
+  );
 
-  const outcome2: MarketOutcome = {
-    id: event?.markets[0]?.outcome2Id ?? "",
-    label: event?.markets[0]?.outcome2Label ?? "",
-    price: event?.markets[0]?.outcome2Price ?? 0,
-  };
+  const outcome2: MarketOutcome = useMemo(
+    () => ({
+      id: event?.markets[0]?.outcome2Id ?? "",
+      label: event?.markets[0]?.outcome2Label ?? "",
+      price: event?.markets[0]?.outcome2Price ?? 0,
+    }),
+    [event?.markets],
+  );
+
+  const MemoizedRelatedMarkets = memo(RelatedMarkets);
+  const MemoizedTimelinePayout = memo(TimelinePayout);
 
   return (
     <main className="grid grid-cols-[757px_1fr] border-t border-t-dark-blue-5">
@@ -72,8 +81,11 @@ const MarketDetailGrid = () => {
               isLoading={isEventLoading}
             />
           </div>
-          <TimelinePayout event={event as Event} isLoading={isEventLoading} />
-          <RelatedMarkets />
+          <MemoizedTimelinePayout
+            event={event as Event}
+            isLoading={isEventLoading}
+          />
+          <MemoizedRelatedMarkets />
         </div>
       </div>
       <div className="pl-[45px] pt-[30px]">
