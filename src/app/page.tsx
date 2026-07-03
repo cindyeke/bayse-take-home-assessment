@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  redirect("/2026-fifa-world-cup-winner");
+  redirect("/will-goodluck-jonathan-contest-the-2027-presidential-election");
 }
