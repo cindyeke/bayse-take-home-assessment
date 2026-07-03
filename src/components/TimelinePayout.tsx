@@ -3,12 +3,19 @@ import { CheckBadgeIcon as CheckBadgeSolid } from "@heroicons/react/24/solid";
 import { CheckBadgeIcon as CheckBadgeOutline } from "@heroicons/react/24/outline";
 import { Event } from "@/types/market";
 import { formatTimelineDate } from "@/util/format";
+import Skeleton from "react-loading-skeleton";
 
 const Title = ({ label }: { label: string }) => {
   return <span className="text-[13.45px] text-dark-blue-60">{label}</span>;
 };
 
-const TimelinePayout = ({ event }: { event: Event }) => {
+const TimelinePayout = ({
+  event,
+  isLoading,
+}: {
+  event: Event;
+  isLoading: boolean;
+}) => {
   const now = new Date();
   const steps = [
     {
@@ -55,7 +62,11 @@ const TimelinePayout = ({ event }: { event: Event }) => {
               <p
                 className={`text-dark-blue-40 mt-[7.69px] ${i < steps.length - 1 ? "pb-8" : ""}`}
               >
-                {step.subtitle}
+                {isLoading ? (
+                  <Skeleton width={100} height={14} borderRadius="5px" />
+                ) : (
+                  step.subtitle
+                )}
               </p>
             </div>
           </div>

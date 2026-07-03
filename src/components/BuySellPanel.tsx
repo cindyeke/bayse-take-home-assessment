@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
-import { MarketOutcome } from "@/types/market";
 import { ArrowsUpDownIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 
-const BuySellPanel = ({ outcome }: { outcome: MarketOutcome }) => {
+const BuySellPanel = () => {
   const [selectedAction, setSelectedAction] = useState<"buy" | "sell">("buy");
-  const [rawAmount, setRawAmount] = useState<string>("0"); // digits only, no commas/₦
+  const [rawAmount, setRawAmount] = useState<string>("0");
 
   const displayAmount = Number(rawAmount || "0").toLocaleString();
 
@@ -24,7 +23,7 @@ const BuySellPanel = ({ outcome }: { outcome: MarketOutcome }) => {
   };
 
   const handleMax = () => {
-    setRawAmount(String(200000)); // TODO: wire to real balance value
+    setRawAmount(String(200000));
   };
 
   return (

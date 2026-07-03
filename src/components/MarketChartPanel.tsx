@@ -8,7 +8,6 @@ import ChanceChart from "./ChanceChart";
 import { TimePeriod } from "@/types/pricehistory";
 import { usePriceHistory } from "@/hooks/usePriceHistory";
 import { Event, MarketOutcome } from "@/types/market";
-import { RawPriceHistoryPoint } from "@/types/pricehistory";
 
 const MarketChartPanel = ({
   event,
@@ -18,36 +17,85 @@ const MarketChartPanel = ({
   outcome: MarketOutcome | null;
 }) => {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>("1W");
-  const { data: chartPriceHistory, isLoading: isPriceHistoryLoading } =
-    usePriceHistory(
-      event?.id ?? "",
-      timePeriod,
-      [event?.markets[0].id ?? ""],
-      outcome,
-    );
-  const { data: dailyPriceHistory } = usePriceHistory(
+
+  const marketId = event?.markets?.[0]?.id;
+  const isMarketReady = Boolean(event?.id && marketId);
+
+  const {
+    data: chartPriceHistory,
+    isLoading: isChartQueryLoading,
+    isError: isChartError,
+    refetch: refetchChart,
+  } = usePriceHistory(event?.id ?? "", timePeriod, [marketId ?? ""], outcome);
+
+  const {
+    data: dailyPriceHistory,
+    isLoading: isDailyQueryLoading,
+    isError: isDailyError,
+    refetch: refetchDaily,
+  } = usePriceHistory(
     event?.id ?? "",
     "24H" as TimePeriod,
-    [event?.markets[0].id ?? ""],
+    [marketId ?? ""],
     outcome,
   );
 
+  const isLoading =
+    !isMarketReady || isChartQueryLoading || isDailyQueryLoading;
+  const isError = isChartError || isDailyError;
+
+  const chartPoints = chartPriceHistory?.markets?.[0]?.priceHistory ?? [];
+  const dailyPoints = dailyPriceHistory?.markets?.[0]?.priceHistory ?? [];
+  const isEmpty = !isLoading && !isError && chartPoints.length === 0;
+
+  const renderChartArea = () => {
+    if (isLoading) {
+      return (
+        <div className="w-full h-[290px] flex items-center justify-center text-[13px] text-dark-blue-50">
+          Loading price history…
+        </div>
+      );
+    }
+
+    if (isError) {
+      return (
+        <div className="w-full h-[290px] flex flex-col items-center justify-center gap-y-2">
+          <span className="text-[13px] text-dark-blue-50">
+            Couldn't load price history.
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              refetchChart();
+              refetchDaily();
+            }}
+            className="text-[13px] font-medium text-azure-blue"
+          >
+            Retry
+          </button>
+        </div>
+      );
+    }
+
+    if (isEmpty) {
+      return (
+        <div className="w-full h-[290px] flex items-center justify-center text-[13px] text-dark-blue-50">
+          No price history available yet.
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <ChanceHeader priceHistory={dailyPoints} />
+        <ChanceChart priceHistory={chartPoints} />
+      </>
+    );
+  };
+
   return (
     <div className="flex flex-col items-center gap-y-[33px]">
-      <div className="w-full">
-        <ChanceHeader
-          priceHistory={
-            dailyPriceHistory?.markets?.[0]?.priceHistory ??
-            ([] as RawPriceHistoryPoint[])
-          }
-        />
-        <ChanceChart
-          priceHistory={
-            chartPriceHistory?.markets?.[0]?.priceHistory ??
-            ([] as RawPriceHistoryPoint[])
-          }
-        />
-      </div>
+      <div className="w-full h-[290px] flex flex-col">{renderChartArea()}</div>
       <div className="w-full flex flex-col items-center">
         <ChartTimeRangeSelector
           timePeriod={timePeriod}

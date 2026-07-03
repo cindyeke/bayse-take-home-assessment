@@ -16,6 +16,7 @@ export function useOrderBook(outcomeIds: string[]) {
     queryFn: ({ signal }) =>
       apiFetch<OrderBook[]>(`v1/pm/books?${params}`, { signal }),
     refetchInterval: 3000,
+    refetchIntervalInBackground: false,
     enabled: Boolean(outcomeIds.length),
   });
 }
