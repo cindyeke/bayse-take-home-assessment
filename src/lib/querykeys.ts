@@ -3,7 +3,7 @@ export const queryKeys = {
   ticker: (marketId: string, outcomeId: string) =>
     ["ticker", marketId, outcomeId] as const,
   orderBook: (outcomeId: string[]) => ["orderBook", outcomeId] as const,
-  trades: (marketId: string) => ["trades", marketId] as const,
+  trades: (marketId: string[]) => ["trades", marketId] as const,
   priceHistory: (
     eventId: string,
     timePeriod: string,

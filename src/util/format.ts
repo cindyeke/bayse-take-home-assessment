@@ -9,3 +9,11 @@ export const formatAmount = (amount: number): string => {
     maximumFractionDigits: 2,
   })}`;
 };
+
+export const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};

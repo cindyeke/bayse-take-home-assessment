@@ -53,7 +53,7 @@ const MarketChartPanel = ({
           timePeriod={timePeriod}
           setTimePeriod={setTimePeriod}
         />
-        <MarketStats />
+        <MarketStats event={event} />
       </div>
     </div>
   );

@@ -29,6 +29,8 @@ const MarketDetailGrid = () => {
     }
   }, [event]);
 
+  console.log({ event });
+
   const outcome1 = outcome ?? {
     id: event?.markets[0].outcome1Id ?? "",
     label: event?.markets[0].outcome1Label ?? "",
