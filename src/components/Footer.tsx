@@ -99,7 +99,7 @@ const Footer = () => {
               Policy, and Prohibition Policy before using the platform.
             </p>
             <p className="text-sm font-bold text-white">
-              © 2026 Bayse. All Right Reserved
+              &copy; {new Date().getFullYear()} Bayse. All Right Reserved
             </p>
           </div>
         </div>
