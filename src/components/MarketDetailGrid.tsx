@@ -16,11 +16,17 @@ const MarketDetailGrid = () => {
   const { slug } = useParams<{ slug: string }>();
 
   const { data: event, isLoading: isEventLoading } = useEventBySlug(slug);
-  const [outcomeId, setOutcomeId] = useState<string | null>(null);
+  const [outcome, setOutcome] = useState<{
+    outcomeLabel: string;
+    outcomeId: string;
+  } | null>(null);
 
   useEffect(() => {
     if (event?.markets[0]?.outcome1Id) {
-      setOutcomeId(event.markets[0].outcome1Id);
+      setOutcome({
+        outcomeLabel: event.markets[0].outcome1Label,
+        outcomeId: event.markets[0].outcome1Id,
+      });
     }
   }, [event]);
 
@@ -36,14 +42,11 @@ const MarketDetailGrid = () => {
         <MarketHeader
           event={event}
           isLoading={isEventLoading}
-          setOutcomeId={setOutcomeId}
+          setOutcome={setOutcome}
         />
         <div className="flex flex-col gap-y-[35px]">
           <div className="flex flex-col gap-y-[46px]">
-            <MarketChartPanel
-              eventId={event?.markets[0].id ?? ""}
-              outcomeId={outcomeId}
-            />
+            <MarketChartPanel event={event} outcome={outcome} />
             <OrderBookPanel
               outcome1={{
                 id: event?.markets[0].outcome1Id ?? "",

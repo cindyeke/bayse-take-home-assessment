@@ -1,30 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/apiclient";
 import { queryKeys } from "@/lib/querykeys";
-import { PriceHistoryPoint } from "@/types/pricehistory";
-
-export type TimePeriod = "12H" | "24H" | "1W" | "1M" | "1Y";
+import { PriceHistoryPoint, TimePeriod } from "@/types/pricehistory";
 
 export function usePriceHistory(
   eventId: string,
   timePeriod: TimePeriod,
   marketIds: string[],
-  outcome: string,
+  outcome: { outcomeLabel: string; outcomeId: string } | null,
 ) {
   const params = new URLSearchParams();
   marketIds.forEach((marketId) => {
     params.append("marketId[]", marketId);
   });
-  params.append("depth", "5");
-  params.append("currency", "NGN");
+  params.append("outcome", outcome?.outcomeLabel.toUpperCase() ?? "");
+  params.append("timePeriod", timePeriod);
 
   return useQuery({
-    queryKey: queryKeys.priceHistory(eventId, timePeriod, marketIds, outcome),
+    queryKey: queryKeys.priceHistory(
+      eventId,
+      timePeriod,
+      marketIds,
+      outcome?.outcomeLabel ?? "",
+    ),
     queryFn: ({ signal }) =>
-      apiFetch<PriceHistoryPoint[]>(
+      apiFetch<PriceHistoryPoint>(
         `v1/pm/events/${eventId}/price-history?${params}`,
         { signal },
       ),
     enabled: Boolean(eventId),
   });
 }
+
+const r =
+  "https://relay.bayse.markets/v1/pm/events/8209e7a0-4ac3-472a-8637-e1dc654f0d1c/price-history?marketId%5B%5D=f23e21fd-34bb-4a8e-904d-6dda9b0dd5c4&outcome=Yes&timePeriod=1W";
