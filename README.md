@@ -159,8 +159,9 @@ These are places where the design showed data I could not confidently map to the
 3. **Wire remaining API fields** — format `event.liquidity` for `MarketStats`, use `resolutionDate` (or a dedicated payout field) for the timeline payout step, and hook up related markets if an endpoint exists.
 4. **Shared React Query provider** — move `QueryClientProvider` to a root `providers.tsx` with sensible defaults (devtools in dev, global error handling).
 5. **Broader test coverage** — integration tests for `MarketDetailGrid`, snapshot for static sections, and E2E with Playwright for the full page flow.
-6. **Buy/sell integration** — connect amounts to real prices/fees from `Market` and validate inputs.
+6. **Buy/sell** — validate input.
 7. **Accessibility** — keyboard support for outcome toggle and accordions, focus management, and aria labels on icon-only controls.
+8. **Smooth transitions** — animate outcome toggle and chart time-range switches (Yes/No, 1D, 1W, 1M, etc.) so the price history chart animates with a fade instead of swapping instantly.
 
 ---
 
