@@ -1,4 +1,3 @@
-// lib/orderbook.ts
 import type { OrderBookLevel, DepthLevel } from "@/types/orderbook";
 
 export interface DerivedOrderBook {
