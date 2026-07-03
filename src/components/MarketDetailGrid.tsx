@@ -63,7 +63,7 @@ const MarketDetailGrid = () => {
             <OrderBookPanel outcome1={outcome1} outcome2={outcome2} />
             <MarketSummary market={event?.markets[0] as Market} />
           </div>
-          <TimelinePayout />
+          <TimelinePayout event={event as Event} />
           <RelatedMarkets />
         </div>
       </div>
