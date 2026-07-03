@@ -11,7 +11,7 @@ import TimelinePayout from "./TimelinePayout";
 import MarketSummary from "./MarketSummary";
 import MarketChartPanel from "./MarketChartPanel";
 import { useEventBySlug } from "@/hooks/useEventBySlug";
-import { Event, MarketOutcome } from "@/types/market";
+import { Event, Market, MarketOutcome } from "@/types/market";
 
 const MarketDetailGrid = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -61,7 +61,7 @@ const MarketDetailGrid = () => {
           <div className="flex flex-col gap-y-[46px]">
             <MarketChartPanel event={event as Event} outcome={outcome} />
             <OrderBookPanel outcome1={outcome1} outcome2={outcome2} />
-            <MarketSummary />
+            <MarketSummary market={event?.markets[0] as Market} />
           </div>
           <TimelinePayout />
           <RelatedMarkets />
