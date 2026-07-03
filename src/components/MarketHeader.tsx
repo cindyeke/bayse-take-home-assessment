@@ -70,7 +70,7 @@ const MarketHeader = ({
             />
           )}
 
-          <h1 className="text-dark-blue font-bold text-2xl min-w-0 flex-1 truncate">
+          <h1 className="text-dark-blue font-bold text-2xl min-w-0 flex-1 whitespace-normal">
             {isLoading ? (
               <Skeleton height={24} width="100%" />
             ) : (
