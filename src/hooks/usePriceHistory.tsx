@@ -2,18 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/apiclient";
 import { queryKeys } from "@/lib/querykeys";
 import { PriceHistoryPoint, TimePeriod } from "@/types/pricehistory";
+import { MarketOutcome } from "@/types/market";
 
 export function usePriceHistory(
   eventId: string,
   timePeriod: TimePeriod,
   marketIds: string[],
-  outcome: { outcomeLabel: string; outcomeId: string } | null,
+  outcome: MarketOutcome | null,
 ) {
   const params = new URLSearchParams();
   marketIds.forEach((marketId) => {
     params.append("marketId[]", marketId);
   });
-  params.append("outcome", outcome?.outcomeLabel.toUpperCase() ?? "");
+  params.append("outcome", outcome?.label.toUpperCase() ?? "");
   params.append("timePeriod", timePeriod);
 
   return useQuery({
@@ -21,7 +22,7 @@ export function usePriceHistory(
       eventId,
       timePeriod,
       marketIds,
-      outcome?.outcomeLabel ?? "",
+      outcome?.label ?? "",
     ),
     queryFn: ({ signal }) =>
       apiFetch<PriceHistoryPoint>(

@@ -7,7 +7,7 @@ import MarketStats from "./MarketStats";
 import ChanceChart from "./ChanceChart";
 import { TimePeriod } from "@/types/pricehistory";
 import { usePriceHistory } from "@/hooks/usePriceHistory";
-import { Event } from "@/types/market";
+import { Event, MarketOutcome } from "@/types/market";
 import { RawPriceHistoryPoint } from "@/types/pricehistory";
 
 const MarketChartPanel = ({
@@ -15,9 +15,8 @@ const MarketChartPanel = ({
   outcome,
 }: {
   event: Event;
-  outcome: { outcomeLabel: string; outcomeId: string } | null;
+  outcome: MarketOutcome | null;
 }) => {
-  console.log({ outcome });
   const [timePeriod, setTimePeriod] = useState<TimePeriod>("1W");
   const { data: chartPriceHistory, isLoading: isPriceHistoryLoading } =
     usePriceHistory(

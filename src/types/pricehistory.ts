@@ -1,5 +1,4 @@
 import { UTCTimestamp } from "lightweight-charts";
-import { MarketOutcome } from "./market";
 
 export type TimePeriod = "12H" | "24H" | "1W" | "1M" | "1Y";
 

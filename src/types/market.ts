@@ -1,7 +1,7 @@
 export type EventStatus = "open" | "closed";
 export type MarketStatus = "open" | "closed";
 export type SupportedCurrency = "USD" | "NGN";
-export type MarketOutcome = "YES" | "NO";
+export type MarketOutcomeLabel = "Yes" | "No";
 
 export interface Market {
   id: string;
@@ -44,3 +44,9 @@ export interface Event {
   userWatchlisted: boolean;
   markets: Market[];
 }
+
+export type MarketOutcome = {
+  label: string;
+  id: string;
+  price: number;
+};

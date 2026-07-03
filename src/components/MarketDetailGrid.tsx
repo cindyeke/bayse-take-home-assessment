@@ -11,25 +11,34 @@ import TimelinePayout from "./TimelinePayout";
 import MarketSummary from "./MarketSummary";
 import MarketChartPanel from "./MarketChartPanel";
 import { useEventBySlug } from "@/hooks/useEventBySlug";
-import { Event } from "@/types/market";
+import { Event, MarketOutcome } from "@/types/market";
 
 const MarketDetailGrid = () => {
   const { slug } = useParams<{ slug: string }>();
 
   const { data: event, isLoading: isEventLoading } = useEventBySlug(slug);
-  const [outcome, setOutcome] = useState<{
-    outcomeLabel: string;
-    outcomeId: string;
-  } | null>(null);
+  const [outcome, setOutcome] = useState<MarketOutcome | null>(null);
 
   useEffect(() => {
     if (event?.markets[0]?.outcome1Id) {
       setOutcome({
-        outcomeLabel: event.markets[0].outcome1Label,
-        outcomeId: event.markets[0].outcome1Id,
+        label: event.markets[0].outcome1Label,
+        id: event.markets[0].outcome1Id,
+        price: event.markets[0].outcome1Price,
       });
     }
   }, [event]);
+
+  const outcome1 = outcome ?? {
+    id: event?.markets[0].outcome1Id ?? "",
+    label: event?.markets[0].outcome1Label ?? "",
+    price: event?.markets[0].outcome1Price ?? 0,
+  };
+  const outcome2 = outcome ?? {
+    id: event?.markets[0].outcome2Id ?? "",
+    label: event?.markets[0].outcome2Label ?? "",
+    price: event?.markets[0].outcome2Price ?? 0,
+  };
 
   return (
     <main className="grid grid-cols-[auto_1fr] border-t border-t-dark-blue-5">
@@ -49,16 +58,7 @@ const MarketDetailGrid = () => {
         <div className="flex flex-col gap-y-[35px]">
           <div className="flex flex-col gap-y-[46px]">
             <MarketChartPanel event={event as Event} outcome={outcome} />
-            <OrderBookPanel
-              outcome1={{
-                id: event?.markets[0].outcome1Id ?? "",
-                label: event?.markets[0].outcome1Label ?? "",
-              }}
-              outcome2={{
-                id: event?.markets[0].outcome2Id ?? "",
-                label: event?.markets[0].outcome2Label ?? "",
-              }}
-            />
+            <OrderBookPanel outcome1={outcome1} outcome2={outcome2} />
             <MarketSummary />
           </div>
           <TimelinePayout />
@@ -66,7 +66,7 @@ const MarketDetailGrid = () => {
         </div>
       </div>
       <div className="pl-[45px] pt-[30px]">
-        <BuySellPanel />
+        <BuySellPanel outcome={outcome as MarketOutcome} />
       </div>
     </main>
   );
