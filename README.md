@@ -161,6 +161,7 @@ These are places where the design showed data I could not confidently map to the
 5. **Broader test coverage** — integration tests for `MarketDetailGrid`, snapshot for static sections, and E2E with Playwright for the full page flow.
 6. **Buy/sell** — validate input.
 7. **Accessibility** — keyboard support for outcome toggle and accordions, focus management, and aria labels on icon-only controls.
+8. **Smooth transitions** — animate outcome toggle and chart time-range switches (Yes/No, 1D, 1W, 1M, etc.) so the price history chart animates with a fade instead of swapping instantly.
 
 ---
 
