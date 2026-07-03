@@ -17,6 +17,7 @@ const MarketChartPanel = ({
   event: Event;
   outcome: { outcomeLabel: string; outcomeId: string } | null;
 }) => {
+  console.log({ outcome });
   const [timePeriod, setTimePeriod] = useState<TimePeriod>("1W");
   const { data: chartPriceHistory, isLoading: isPriceHistoryLoading } =
     usePriceHistory(

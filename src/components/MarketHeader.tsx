@@ -8,15 +8,18 @@ import { Event } from "@/types/market";
 const MarketHeader = ({
   event,
   isLoading,
+  outcome,
   setOutcome,
 }: {
   event?: Event;
   isLoading?: boolean;
+  outcome: { outcomeLabel: string; outcomeId: string } | null;
   setOutcome: Dispatch<
     SetStateAction<{ outcomeLabel: string; outcomeId: string } | null>
   >;
 }) => {
   const market = !isLoading ? event?.markets[0] : null;
+  const activeOutcomeId = outcome?.outcomeId;
 
   return (
     <div className="flex flex-col gap-y-[21.64px] mb-6">
@@ -61,7 +64,7 @@ const MarketHeader = ({
       ) : (
         <div className="w-fit p-[6px] bg-secondary font-archivo text-[10px] rounded-[5px]">
           <button
-            className="px-2 bg-white font-semibold rounded-[3px] h-[19px] text-azure-blue mr-4"
+            className={`rounded-[3px] h-[19px] mr-4 ${activeOutcomeId === market?.outcome1Id ? "px-2 font-semibold bg-white text-azure-blue" : "font-medium text-dark-blue-30"}`}
             onClick={() =>
               setOutcome({
                 outcomeLabel: market?.outcome1Label ?? "",
@@ -72,10 +75,10 @@ const MarketHeader = ({
             {market?.outcome1Label}
           </button>
           <button
-            className="font-medium h-[19px] text-dark-blue-30"
+            className={` h-[19px] rounded-[3px] ${activeOutcomeId === market?.outcome2Id ? "px-2 font-semibold bg-white text-azure-blue" : "font-medium text-dark-blue-30"}`}
             onClick={() =>
               setOutcome({
-                outcomeLabel: market?.outcome1Label ?? "",
+                outcomeLabel: market?.outcome2Label ?? "",
                 outcomeId: market?.outcome2Id ?? "",
               })
             }
