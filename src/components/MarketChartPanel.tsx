@@ -18,23 +18,32 @@ const MarketChartPanel = ({
   outcome: { outcomeLabel: string; outcomeId: string } | null;
 }) => {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>("1W");
-  const { data: priceHistory, isLoading: isPriceHistoryLoading } =
+  const { data: chartPriceHistory, isLoading: isPriceHistoryLoading } =
     usePriceHistory(
       event?.id ?? "",
       timePeriod,
       [event?.markets[0].id ?? ""],
       outcome,
     );
-
-  console.log({ priceHistory });
+  const { data: dailyPriceHistory } = usePriceHistory(
+    event?.id ?? "",
+    "24H" as TimePeriod,
+    [event?.markets[0].id ?? ""],
+    outcome,
+  );
 
   return (
     <div className="flex flex-col items-center gap-y-[33px]">
       <div className="w-full">
-        <ChanceHeader />
+        <ChanceHeader
+          priceHistory={
+            dailyPriceHistory?.markets?.[0]?.priceHistory ??
+            ([] as RawPriceHistoryPoint[])
+          }
+        />
         <ChanceChart
           priceHistory={
-            priceHistory?.markets?.[0]?.priceHistory ??
+            chartPriceHistory?.markets?.[0]?.priceHistory ??
             ([] as RawPriceHistoryPoint[])
           }
         />

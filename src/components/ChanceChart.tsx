@@ -83,6 +83,10 @@ const ChanceChart = ({
       priceLineVisible: false,
       lastValueVisible: false,
       crosshairMarkerVisible: false,
+      priceFormat: {
+        type: "custom",
+        formatter: (price: number) => `${price.toFixed(0)}%`,
+      },
     });
     series.setData(s);
 
