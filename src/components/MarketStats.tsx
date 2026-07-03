@@ -12,10 +12,12 @@ const MarketStats = ({ event }: { event: Event }) => {
         <img src="/icons/droplets.svg" alt="droplets" />
         <span>200K</span>
       </div>
-      <div className="pl-[74.09px] flex gap-x-1.5">
-        <img src="/icons/clock.svg" alt="clock" />
-        <span>{formatDate(event?.closingDate ?? "")}</span>
-      </div>
+      {event?.closingDate && (
+        <div className="pl-[74.09px] flex gap-x-1.5">
+          <img src="/icons/clock.svg" alt="clock" />
+          <span>{formatDate(event?.closingDate)}</span>
+        </div>
+      )}
     </div>
   );
 };
