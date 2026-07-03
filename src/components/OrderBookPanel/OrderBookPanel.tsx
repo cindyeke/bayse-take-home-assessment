@@ -4,6 +4,7 @@ import { deriveOrderBook } from "@/lib/orderbook";
 import Accordion from "../Accordion";
 import OrderBookRow from "./OrderBookRow";
 import { formatPrice } from "@/util/format";
+import { MarketOutcome } from "@/types/market";
 
 const Title = ({ title }: { title: string }) => {
   return (
@@ -18,8 +19,8 @@ const OrderBookPanel = ({
   outcome1,
   outcome2,
 }: {
-  outcome1: { id: string; label: string };
-  outcome2: { id: string; label: string };
+  outcome1: MarketOutcome;
+  outcome2: MarketOutcome;
 }) => {
   const {
     data: orderBooks,

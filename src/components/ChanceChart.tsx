@@ -47,7 +47,6 @@ const ChanceChart = ({
 }: {
   priceHistory: RawPriceHistoryPoint[];
 }) => {
-  console.log({ priceHistory });
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

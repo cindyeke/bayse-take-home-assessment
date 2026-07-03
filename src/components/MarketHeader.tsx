@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import { Event } from "@/types/market";
+import { Event, MarketOutcome } from "@/types/market";
 
 const MarketHeader = ({
   event,
@@ -13,17 +13,16 @@ const MarketHeader = ({
 }: {
   event?: Event;
   isLoading?: boolean;
-  outcome: { outcomeLabel: string; outcomeId: string } | null;
-  setOutcome: Dispatch<
-    SetStateAction<{ outcomeLabel: string; outcomeId: string } | null>
-  >;
+  outcome: MarketOutcome | null;
+  setOutcome: Dispatch<SetStateAction<MarketOutcome | null>>;
 }) => {
   const market = !isLoading ? event?.markets[0] : null;
-  const activeOutcomeId = outcome?.outcomeId;
+
+  const activeOutcomeId = outcome?.id;
 
   return (
     <div className="flex flex-col gap-y-[21.64px] mb-6">
-      <div className="flex pr-[28.54px] items-center justify-between">
+      <div className="flex pr-[28.54px] items-center justify-between gap-x-3">
         <div className="flex gap-x-[28.85px] items-center">
           {isLoading ? (
             <Skeleton width={84.75} height={84.75} borderRadius="6px" />
@@ -33,6 +32,7 @@ const MarketHeader = ({
               alt="market"
               width={84.75}
               height={84.75}
+              className="w-[84.75px] h-[84.75px] object-cover shrink-0 rounded-[7.21px]"
             />
           )}
 
@@ -67,8 +67,9 @@ const MarketHeader = ({
             className={`rounded-[3px] h-[19px] mr-4 ${activeOutcomeId === market?.outcome1Id ? "px-2 font-semibold bg-white text-azure-blue" : "font-medium text-dark-blue-30"}`}
             onClick={() =>
               setOutcome({
-                outcomeLabel: market?.outcome1Label ?? "",
-                outcomeId: market?.outcome1Id ?? "",
+                label: market?.outcome1Label ?? "",
+                id: market?.outcome1Id ?? "",
+                price: market?.outcome1Price ?? 0,
               })
             }
           >
@@ -78,8 +79,9 @@ const MarketHeader = ({
             className={` h-[19px] rounded-[3px] ${activeOutcomeId === market?.outcome2Id ? "px-2 font-semibold bg-white text-azure-blue" : "font-medium text-dark-blue-30"}`}
             onClick={() =>
               setOutcome({
-                outcomeLabel: market?.outcome2Label ?? "",
-                outcomeId: market?.outcome2Id ?? "",
+                label: market?.outcome2Label ?? "",
+                id: market?.outcome2Id ?? "",
+                price: market?.outcome2Price ?? 0,
               })
             }
           >

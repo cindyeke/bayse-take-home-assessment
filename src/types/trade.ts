@@ -1,11 +1,11 @@
-import { MarketOutcome } from "./market";
+import { MarketOutcomeLabel } from "./market";
 
 export type TradeSide = "BUY" | "SELL";
 
 export interface Trade {
   id: string;
   marketId: string;
-  outcome: MarketOutcome;
+  outcome: MarketOutcomeLabel;
   price: number;
   size: number;
   createdAt: string;

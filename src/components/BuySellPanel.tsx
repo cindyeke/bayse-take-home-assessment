@@ -1,14 +1,46 @@
+"use client";
+import { useState } from "react";
+import { MarketOutcome } from "@/types/market";
 import { ArrowsUpDownIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 
-const BuySellPanel = () => {
+const BuySellPanel = ({ outcome }: { outcome: MarketOutcome }) => {
+  const [selectedAction, setSelectedAction] = useState<"buy" | "sell">("buy");
+  const [rawAmount, setRawAmount] = useState<string>("0"); // digits only, no commas/₦
+
+  const displayAmount = Number(rawAmount || "0").toLocaleString();
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digitsOnly = e.target.value.replace(/[^\d]/g, "");
+    const normalized = digitsOnly.replace(/^0+(?=\d)/, "");
+    setRawAmount(normalized || "0");
+  };
+
+  const handleIncrement = (amount: number) => {
+    setRawAmount((prev) => String(Number(prev || "0") + amount));
+  };
+
+  const handleReset = () => {
+    setRawAmount("0");
+  };
+
+  const handleMax = () => {
+    setRawAmount(String(200000)); // TODO: wire to real balance value
+  };
+
   return (
     <div className="border border-stroke-light rounded-[15px] py-8 px-[27px]">
       <div className="flex items-center justify-between mb-5">
-        <div className="flex bg-dark-blue-5 rounded-lg text-[11px] leading-[20.78px]">
-          <button className="px-5 py-[7px] rounded-[8px] font-semibold bg-azure-blue text-white">
+        <div className="flex bg-dark-blue-5 rounded-lg text-[11px] leading-[20.78px] font-semibold">
+          <button
+            className={`px-5 py-[7px] rounded-[8px]  ${selectedAction === "buy" ? "bg-azure-blue text-white" : "text-dark-blue-80"}`}
+            onClick={() => setSelectedAction("buy")}
+          >
             Buy
           </button>
-          <button className="px-5 py-2 rounded-[8px] font-semibold text-dark-blue-80">
+          <button
+            className={`px-5 py-[7px] rounded-[8px]  ${selectedAction === "sell" ? "bg-azure-blue text-white" : "text-dark-blue-80"}`}
+            onClick={() => setSelectedAction("sell")}
+          >
             Sell
           </button>
         </div>
@@ -29,28 +61,55 @@ const BuySellPanel = () => {
           Your Balance: ₦200,000
         </span>
 
-        <p className="text-6xl font-extrabold text-dark-blue-20">₦0</p>
+        <div className="flex items-baseline">
+          <span className="text-6xl font-extrabold text-dark-blue-20 ml-5">
+            ₦
+          </span>
+          <input
+            type="text"
+            inputMode="numeric"
+            value={displayAmount}
+            onChange={handleAmountChange}
+            size={displayAmount.length || 1}
+            className="text-6xl font-extrabold text-dark-blue-20 bg-transparent outline-none text-left"
+          />
+        </div>
       </div>
 
       <div className="flex gap-[3px] mb-4 font-archivo">
-        <button className="bg-dark-blue-5 flex items-center gap-[2.5px] py-[9px] px-[6px] border border-azure-blue-light/30 rounded-sm text-dark-blue-50 text-xs whitespace-nowrap">
+        <button
+          onClick={handleReset}
+          className="bg-dark-blue-5 flex items-center gap-[2.5px] py-[9px] px-[6px] border border-azure-blue-light/30 rounded-sm text-dark-blue-50 text-xs whitespace-nowrap"
+        >
           <ArrowPathIcon className="w-4 h-4" />
           ₦1,500
         </button>
 
-        <button className="flex-1 border border-azure-blue-light/30 rounded-sm py-[9px] px-[6px] text-dark-blue-50 text-xs whitespace-nowrap">
+        <button
+          onClick={() => handleIncrement(1000)}
+          className="flex-1 border border-azure-blue-light/30 rounded-sm py-[9px] px-[6px] text-dark-blue-50 text-xs whitespace-nowrap"
+        >
           +₦1,000
         </button>
 
-        <button className="flex-1 border border-azure-blue-light/30 rounded-sm py-[9px] px-[6px] text-dark-blue-50 text-xs whitespace-nowrap">
+        <button
+          onClick={() => handleIncrement(5000)}
+          className="flex-1 border border-azure-blue-light/30 rounded-sm py-[9px] px-[6px] text-dark-blue-50 text-xs whitespace-nowrap"
+        >
           +₦5,000
         </button>
 
-        <button className="flex-1 border border-azure-blue-light/30 rounded-sm py-[9px] px-[6px] text-dark-blue-50 text-xs whitespace-nowrap">
+        <button
+          onClick={() => handleIncrement(10000)}
+          className="flex-1 border border-azure-blue-light/30 rounded-sm py-[9px] px-[6px] text-dark-blue-50 text-xs whitespace-nowrap"
+        >
           +₦10,000
         </button>
 
-        <button className="border border-azure-blue-light/30 rounded-sm py-[9px] px-[6px] text-dark-blue-50 text-xs whitespace-nowrap">
+        <button
+          onClick={handleMax}
+          className="border border-azure-blue-light/30 rounded-sm py-[9px] px-[6px] text-dark-blue-50 text-xs whitespace-nowrap"
+        >
           Max
         </button>
       </div>
