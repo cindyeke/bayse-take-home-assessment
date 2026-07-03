@@ -1,4 +1,6 @@
 import { Onest, Inter, Archivo } from "next/font/google";
+import type { Metadata } from "next";
+
 import "./globals.css";
 
 const onest = Onest({
@@ -13,6 +15,11 @@ const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-archivo",
 });
+
+export const metadata: Metadata = {
+  title: "Bayse",
+  description: "",
+};
 
 export default function RootLayout({
   children,

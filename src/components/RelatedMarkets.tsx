@@ -1,4 +1,4 @@
-type Market = {
+type RelatedMarket = {
   id: string;
   image: string;
   title: string;
@@ -6,7 +6,7 @@ type Market = {
   label?: string;
 };
 
-const markets: Market[] = [
+const markets: RelatedMarket[] = [
   {
     id: "1",
     image: "/marketimage.png",

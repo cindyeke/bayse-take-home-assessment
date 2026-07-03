@@ -8,7 +8,7 @@ import {
 } from "lightweight-charts";
 import { useEffect, useRef } from "react";
 import { mapPriceHistory } from "@/lib/pricehistory";
-import { PriceHistoryPoint, RawPriceHistoryPoint } from "@/types/pricehistory";
+import { RawPriceHistoryPoint } from "@/types/pricehistory";
 
 function formatTickDate(time: Time) {
   let year: number;
