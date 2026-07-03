@@ -4,31 +4,21 @@ import { queryKeys } from "@/lib/querykeys";
 import { PriceHistoryPoint, TimePeriod } from "@/types/pricehistory";
 import { MarketOutcome } from "@/types/market";
 
-export function usePriceHistory(
-  eventId: string,
-  timePeriod: TimePeriod,
+export function useTrades(
   marketIds: string[],
-  outcome: MarketOutcome | null,
 ) {
   const params = new URLSearchParams();
   marketIds.forEach((marketId) => {
     params.append("marketId[]", marketId);
   });
-  params.append("outcome", outcome?.label.toUpperCase() ?? "");
-  params.append("timePeriod", timePeriod);
 
   return useQuery({
-    queryKey: queryKeys.priceHistory(
-      eventId,
-      timePeriod,
+    queryKey: queryKeys.trades(
       marketIds,
-      outcome?.label ?? "",
     ),
     queryFn: ({ signal }) =>
-      apiFetch<PriceHistoryPoint>(
-        `v1/pm/events/${eventId}/price-history?${params}`,
-        { signal },
-      ),
-    enabled: Boolean(eventId),
+      apiFetch<PriceHistoryPoint>(`v1/pm/trades?${params}`, { signal }),
+    enabled: Boolean(marketIds.length > 0),
   });
 }
+

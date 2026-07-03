@@ -1,18 +1,33 @@
 import Accordion from "./Accordion";
 import { CheckBadgeIcon as CheckBadgeSolid } from "@heroicons/react/24/solid";
 import { CheckBadgeIcon as CheckBadgeOutline } from "@heroicons/react/24/outline";
-
-const steps = [
-  { title: "Market Open", subtitle: "18th of June, 2026", completed: true },
-  { title: "Market Close", subtitle: "28th of July, 2026", completed: false },
-  { title: "Payout", subtitle: "4-12 Hours After close", completed: false },
-];
+import { Event } from "@/types/market";
+import { formatTimelineDate } from "@/util/format";
 
 const Title = ({ label }: { label: string }) => {
   return <span className="text-[13.45px] text-dark-blue-60">{label}</span>;
 };
 
-const TimelinePayout = () => {
+const TimelinePayout = ({ event }: { event: Event }) => {
+  const now = new Date();
+  const steps = [
+    {
+      title: "Market Open",
+      subtitle: event?.createdAt ? formatTimelineDate(event.createdAt) : "",
+      completed: !!event?.createdAt && new Date(event.createdAt) <= now,
+    },
+    {
+      title: "Market Close",
+      subtitle: event?.closingDate ? formatTimelineDate(event.closingDate) : "",
+      completed: !!event?.closingDate && new Date(event.closingDate) <= now,
+    },
+    {
+      title: "Payout",
+      subtitle: "4–12 Hours After Close",
+      completed: event?.status === "resolved",
+    },
+  ];
+
   return (
     <Accordion title={<Title label="Timeline & Payout" />}>
       <div className="pt-[25px] pl-6 pb-[26.7px]">
@@ -33,7 +48,6 @@ const TimelinePayout = () => {
               )}
             </div>
 
-            {/* Text */}
             <div
               className={`text-[11.53px] ${i < steps.length - 1 ? "pb-8" : ""}`}
             >

@@ -1,12 +1,11 @@
-export type EventStatus = "open" | "closed";
-export type MarketStatus = "open" | "closed";
+export type Status = "open" | "closed" | "resolved";
 export type SupportedCurrency = "USD" | "NGN";
 export type MarketOutcomeLabel = "Yes" | "No";
 
 export interface Market {
   id: string;
   title: string;
-  status: MarketStatus;
+  status: Status;
   imageUrl: string;
   outcome1Id: string;
   outcome1Label: string;
@@ -30,8 +29,8 @@ export interface Event {
   category: string;
   type: string;
   engine: string;
-  status: EventStatus;
-  openingDate: string;
+  status: Status;
+  createdAt: string;
   closingDate: string;
   resolutionDate: string;
   assetSymbolPair: string;
