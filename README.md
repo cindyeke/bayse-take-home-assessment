@@ -1,6 +1,5 @@
 # Bayse — Market Detail Page (Take-Home Assessment)
 
-
 **Live route:** `/[slug]` — the home page redirects to a sample market:
 
 ```
@@ -11,15 +10,15 @@
 
 ## Tech stack
 
-| Layer | Choice |
-| --- | --- |
-| Framework | Next.js 16 (App Router) |
-| UI | React 19, TypeScript, Tailwind CSS v4 |
-| Data fetching | TanStack Query v5 |
-| Charts | [lightweight-charts](https://tradingview.github.io/lightweight-charts/) v4 |
-| Icons | Heroicons |
-| Loading states | react-loading-skeleton |
-| Testing | Jest, React Testing Library, ts-jest |
+| Layer          | Choice                                                                     |
+| -------------- | -------------------------------------------------------------------------- |
+| Framework      | Next.js 16 (App Router)                                                    |
+| UI             | React 19, TypeScript, Tailwind CSS v4                                      |
+| Data fetching  | TanStack Query v5                                                          |
+| Charts         | [lightweight-charts](https://tradingview.github.io/lightweight-charts/) v4 |
+| Icons          | Heroicons                                                                  |
+| Loading states | react-loading-skeleton                                                     |
+| Testing        | Jest, React Testing Library, ts-jest                                       |
 
 **API:** `https://relay.bayse.markets/`
 
@@ -29,15 +28,15 @@
 
 **Requirements:** Node.js 20+ and npm.
 
-```bash
-# Install dependencies
-npm install
+From the project root, run:
 
-# Start the dev server
-npm run dev
+```bash
+npm install && npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — you’ll be redirected to the sample market slug above.
+That installs dependencies and starts the dev server in one step. Open [http://localhost:3000](http://localhost:3000) — you’ll be redirected to the sample market slug above.
+
+No `.env` file or extra setup is required.
 
 **Other scripts:**
 
@@ -55,17 +54,19 @@ npm test        # Run unit tests (Jest)
 Tests use **Jest** with **React Testing Library**, configured via `jest.config.ts` and `jest.setup.ts` (Next.js `next/jest` preset, jsdom environment).
 
 ```bash
-npm test
+npm install && npm test
 ```
+
+(Run `npm install` first if you haven’t already — the same install step as above also pulls in Jest.)
 
 **What’s covered:**
 
-| File | Focus |
-| --- | --- |
-| `src/__tests__/useEvent.test.tsx` | `useEventBySlug` — success and error paths |
+| File                                      | Focus                                                                     |
+| ----------------------------------------- | ------------------------------------------------------------------------- |
+| `src/__tests__/useEvent.test.tsx`         | `useEventBySlug` — success and error paths                                |
 | `src/__tests__/MarketChartPanel.test.tsx` | Loading, error/retry, empty, and loaded chart states; timeframe switching |
-| `src/__tests__/OrderBookPanel.test.tsx` | Loading, error/retry, empty, success, outcome toggle |
-| `src/__tests__/OrderBookRow.test.tsx` | Bid/ask row formatting, colours, depth bar width |
+| `src/__tests__/OrderBookPanel.test.tsx`   | Loading, error/retry, empty, success, outcome toggle                      |
+| `src/__tests__/OrderBookRow.test.tsx`     | Bid/ask row formatting, colours, depth bar width                          |
 
 API calls and child chart components are mocked where needed so tests stay fast and deterministic. Shared test helpers live in `src/test-utils/`.
 
@@ -143,11 +144,11 @@ src/
 
 These are places where the design showed data I could not confidently map to the API (or where no endpoint was obvious) within the assessment window.
 
-| UI element | Current behaviour | Notes |
-| --- | --- | --- |
-| **Liquidity (`200K`)** in `MarketStats` | Hardcoded `200K` | The `Event` type includes a `liquidity` field, but I wasn’t sure how the API value should be formatted (compact `200K` vs full currency) or whether it matched the design’s “liquidity” stat. `totalOrders` and `closingDate` are wired from the API. |
-| **Payout step** in `TimelinePayout` | Subtitle: `"4–12 Hours After Close"` | Market open/close use `createdAt` and `closingDate`. The API exposes `resolutionDate` and `status`, but I didn’t confirm the payout copy or timing rules from the API, so the payout subtitle is static design copy. Completion still keys off `status === "resolved"`. |
-| **Related markets** | Static mock list in `RelatedMarkets.tsx` | No related-events endpoint was documented or discovered; the section matches the design with placeholder data. |
+| UI element                              | Current behaviour                        | Notes                                                                                                                                                                                                                                                                   |
+| --------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Liquidity (`200K`)** in `MarketStats` | Hardcoded `200K`                         | The `Event` type includes a `liquidity` field, but I wasn’t sure how the API value should be formatted (compact `200K` vs full currency) or whether it matched the design’s “liquidity” stat. `totalOrders` and `closingDate` are wired from the API.                   |
+| **Payout step** in `TimelinePayout`     | Subtitle: `"4–12 Hours After Close"`     | Market open/close use `createdAt` and `closingDate`. The API exposes `resolutionDate` and `status`, but I didn’t confirm the payout copy or timing rules from the API, so the payout subtitle is static design copy. Completion still keys off `status === "resolved"`. |
+| **Related markets**                     | Static mock list in `RelatedMarkets.tsx` | No related-events endpoint was documented or discovered; the section matches the design with placeholder data.                                                                                                                                                          |
 
 ---
 
@@ -166,8 +167,9 @@ These are places where the design showed data I could not confidently map to the
 
 ## Notes for reviewers
 
-- Run `npm run dev` and open the default slug, or swap the slug in the URL to load another event (if it exists in the API).
+- **Quick start:** `npm install && npm run dev`, then open [http://localhost:3000](http://localhost:3000).
+- Swap the slug in the URL to load another event (if it exists in the API).
 - `npm run build` should complete successfully with network access for any runtime fetches during static analysis.
-- `npm run test` for unit tests; `npm run lint` for ESLint.
+- `npm test` for unit tests (after `npm install`); `npm run lint` for ESLint.
 
 Thanks for reviewing!
