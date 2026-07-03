@@ -161,7 +161,6 @@ These are places where the design showed data I could not confidently map to the
 5. **Broader test coverage** — integration tests for `MarketDetailGrid`, snapshot for static sections, and E2E with Playwright for the full page flow.
 6. **Buy/sell integration** — connect amounts to real prices/fees from `Market` and validate inputs.
 7. **Accessibility** — keyboard support for outcome toggle and accordions, focus management, and aria labels on icon-only controls.
-8. **Pitanga font** — bundle under proper license once available, or confirm the approved production font stack with design.
 
 ---
 
