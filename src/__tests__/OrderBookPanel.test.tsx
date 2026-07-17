@@ -7,6 +7,7 @@ jest.mock("@/hooks/useOrderBook");
 
 const outcome1: MarketOutcome = { id: "yes-id", label: "Yes", price: 0.55 };
 const outcome2: MarketOutcome = { id: "no-id", label: "No", price: 0.45 };
+const marketId = "market-1";
 
 const mockSnapshot = {
   outcomeId: "yes-id",
@@ -16,7 +17,32 @@ const mockSnapshot = {
   lastTradedSide: "SELL" as const,
 };
 
+const renderPanel = () =>
+  render(
+    <OrderBookPanel
+      outcome1={outcome1}
+      outcome2={outcome2}
+      marketId={marketId}
+    />,
+  );
+
 afterEach(() => jest.resetAllMocks());
+
+test("subscribes to the order book for both outcomes and the market", () => {
+  (useOrderBook as jest.Mock).mockReturnValue({
+    data: undefined,
+    isLoading: true,
+    isError: false,
+    refetch: jest.fn(),
+  });
+
+  renderPanel();
+
+  expect(useOrderBook).toHaveBeenCalledWith(
+    [outcome1.id, outcome2.id],
+    marketId,
+  );
+});
 
 test("shows a loading state while fetching", () => {
   (useOrderBook as jest.Mock).mockReturnValue({
@@ -26,7 +52,7 @@ test("shows a loading state while fetching", () => {
     refetch: jest.fn(),
   });
 
-  render(<OrderBookPanel outcome1={outcome1} outcome2={outcome2} />);
+  renderPanel();
 
   expect(screen.getByText(/loading order book/i)).toBeInTheDocument();
 });
@@ -40,7 +66,7 @@ test("shows an error state with a working retry button", () => {
     refetch,
   });
 
-  render(<OrderBookPanel outcome1={outcome1} outcome2={outcome2} />);
+  renderPanel();
 
   expect(screen.getByText(/couldn't load the order book/i)).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: /retry/i }));
@@ -55,7 +81,7 @@ test("shows an empty state when the selected outcome has no bids or asks", () =>
     refetch: jest.fn(),
   });
 
-  render(<OrderBookPanel outcome1={outcome1} outcome2={outcome2} />);
+  renderPanel();
 
   expect(
     screen.getByText(/no open orders for this market yet/i),
@@ -70,7 +96,7 @@ test("renders bid and ask rows, last traded price, and spread on success", () =>
     refetch: jest.fn(),
   });
 
-  render(<OrderBookPanel outcome1={outcome1} outcome2={outcome2} />);
+  renderPanel();
 
   expect(screen.getByText(/order book/i)).toBeInTheDocument();
   expect(screen.getByText(/last traded price/i)).toBeInTheDocument();
@@ -92,7 +118,7 @@ test("switches to the second outcome's order book when its toggle is clicked", (
     refetch: jest.fn(),
   });
 
-  render(<OrderBookPanel outcome1={outcome1} outcome2={outcome2} />);
+  renderPanel();
 
   fireEvent.click(screen.getByRole("button", { name: /no offers/i }));
 

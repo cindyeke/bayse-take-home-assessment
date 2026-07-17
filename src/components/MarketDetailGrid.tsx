@@ -75,7 +75,11 @@ const MarketDetailGrid = () => {
         <div className="flex flex-col gap-y-[35px]">
           <div className="flex flex-col gap-y-[46px]">
             <MarketChartPanel event={event as Event} outcome={outcome} />
-            <OrderBookPanel outcome1={outcome1} outcome2={outcome2} />
+            <OrderBookPanel
+              outcome1={outcome1}
+              outcome2={outcome2}
+              marketId={event?.markets[0]?.id ?? ""}
+            />
             <MarketSummary
               market={event?.markets[0] as Market}
               isLoading={isEventLoading}
