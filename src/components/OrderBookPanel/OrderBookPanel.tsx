@@ -18,16 +18,18 @@ const Title = ({ title }: { title: string }) => {
 const OrderBookPanel = ({
   outcome1,
   outcome2,
+  marketId,
 }: {
   outcome1: MarketOutcome;
   outcome2: MarketOutcome;
+  marketId: string;
 }) => {
   const {
     data: orderBooks,
     isLoading,
     isError,
     refetch,
-  } = useOrderBook([outcome1.id, outcome2.id]);
+  } = useOrderBook([outcome1.id, outcome2.id], marketId);
 
   const [userSelectedOutcome, setUserSelectedOutcome] = useState<string | null>(
     null,
